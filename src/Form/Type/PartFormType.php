@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\PartNumber;
 
 use App\Form\Type\BrandFormType;
@@ -22,8 +21,9 @@ class PartFormType extends AbstractType
             ->add('id', HiddenType::class)
             ->add('numberText', TextType::class,['trim' => true, 'label' => 'Номер запчасти'])
             ->add('info', TextType::class,['trim' => true, 'required' => false, 'label' => 'Описание'])
-            ->add('PartBrand', BrandFormType::class);
-            //->add('save', SubmitType::class);
+            ->add('PartBrand', BrandFormType::class,[
+                'label' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

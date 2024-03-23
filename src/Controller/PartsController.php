@@ -74,7 +74,7 @@ class PartsController extends AbstractController
         }
         
         
-        return $this->render('parts/addBrand.html.twig',[
+        return $this->render('parts/addPart.html.twig',[
             'form' => $form,
         ]);
     }

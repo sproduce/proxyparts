@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\PartBrand;
 
@@ -22,7 +21,6 @@ class BrandFormType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('name', TextType::class,['trim' => true, 'label' => 'Производитель']);
-            //->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

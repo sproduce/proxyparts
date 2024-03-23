@@ -34,6 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
     private ?string $tgId = null;
 
+    #[ORM\OneToOne(mappedBy: 'userId', cascade: ['persist', 'remove'])]
+    private ?PartsOffer $partsOffer = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -124,6 +127,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTgId(?string $tgId): static
     {
         $this->tgId = $tgId;
+
+        return $this;
+    }
+
+    public function getPartsOffer(): ?PartsOffer
+    {
+        return $this->partsOffer;
+    }
+
+    public function setPartsOffer(PartsOffer $partsOffer): static
+    {
+        // set the owning side of the relation if necessary
+        if ($partsOffer->getUserId() !== $this) {
+            $partsOffer->setUserId($this);
+        }
+
+        $this->partsOffer = $partsOffer;
 
         return $this;
     }

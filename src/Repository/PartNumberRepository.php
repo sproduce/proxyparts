@@ -39,6 +39,18 @@ class PartNumberRepository extends ServiceEntityRepository implements PartNumber
     }
     
     
+    public function searchParts($number) 
+    {
+        
+    }
+    
+    
+    public function searchPart($number, $brandId): PartNumber
+    {
+        
+    }
+    
+    
     
 //    /**
 //     * @return PartNumber[] Returns an array of PartNumber objects

@@ -13,7 +13,7 @@ use App\Form\Type\PartFormType;
 use App\Form\Type\PartsOfferFormType;
 
 
-class PartsController extends AbstractController
+class AdminController extends AbstractController
 {
     #[Route('/parts', name: 'app_parts')]
     public function partsList(PartsService $partsServ ): Response

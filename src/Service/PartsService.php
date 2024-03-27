@@ -6,9 +6,6 @@ use App\Entity\PartBrand;
 use App\Entity\PartNumber;
 
 use App\Repository\Interfaces\PartBrandRepositoryInterface;
-use App\Repository\PartBrandRepository;
-
-
 use App\Repository\Interfaces\PartNumberRepositoryInterface;
 
 
@@ -25,16 +22,6 @@ class PartsService {
     
     public function getPartBrand($id): PartBrand
     {
-//        $name = 'test11';
-//        
-//        $partBrandObj = $this->partBrandRep->getBrandByName($name);
-//        if (!$partBrandObj){
-//            $partBrandObj = new PartBrand();
-//            $partBrandObj->setName($name);
-//        }
-
-        //$this->partBrandRep->storeBrand($partBrandObj);
-        
        return $this->partBrandRep->getBrand($id) ?? new PartBrand();
     }
     
@@ -46,13 +33,18 @@ class PartsService {
     }
     
     
-    
-    
-    
     public function storePartNumber(PartNumber $partNumberObj) 
     {
         $this->partNumberRep->storePartNumber($partNumberObj);
     }
+    
+    
+    public function storePartBrand(PartBrand $partBrandObj) 
+    {
+        $this->partBrandRep->storeBrand($$partBrandObj);
+    }
+    
+    
     
     
 }

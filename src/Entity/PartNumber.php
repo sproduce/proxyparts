@@ -36,6 +36,9 @@ class PartNumber
     #[JoinColumn(name: 'part_brand_id', referencedColumnName: 'id')]
     private ?PartBrand $partBrand = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -112,6 +115,18 @@ class PartNumber
     public function setPartBrand(?PartBrand $partBrand): static
     {
         $this->partBrand = $partBrand;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

@@ -23,12 +23,7 @@
         <nav class="bg-light border-bottom">
             <div class="container d-flex flex-wrap">
                 {%  block menu %}    
-                    <ul class="nav me-auto">
-                        <li class="nav-item"><a href="/" class="nav-link link-dark active px-2">О проекте</a></li>
-                        <li class="nav-item"><a href="/news" class="nav-link link-dark px-2">Новости</a></li>
-                        <li class="nav-item"><a href="/apiInfo" class="nav-link link-dark px-2">Описание API</a></li>
-                        <li class="nav-item"><a href="/contact" class="nav-link link-dark px-2">Контакты</a></li>
-                    </ul>
+                     {% include 'menu/default.html.twig' %}
                 {% endblock %}
                 {%  if app.user %}
                     <div class="dropdown text-end">

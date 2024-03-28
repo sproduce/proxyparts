@@ -18,6 +18,7 @@ class AuthController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
+        //var_dump($error);
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('authIndex.html.twig', [
@@ -52,7 +53,7 @@ class AuthController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('user/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

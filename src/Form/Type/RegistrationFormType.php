@@ -34,7 +34,7 @@ class RegistrationFormType extends AbstractType
 //                    ]),
 //                ],
 //            ])
-            ->add('nickname', TextType::class,['trim' => true,'label' => 'Имя (название организации)'])
+//            ->add('nickname', TextType::class,['trim' => true,'label' => 'Имя (название организации)'])
             ->add('plainPassword', RepeatedType::class,[
                 'trim' => true,
                 'type' => PasswordType::class,

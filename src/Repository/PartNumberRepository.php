@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\PartNumber;
+use App\Entity\PartBrand;
+
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -25,11 +27,11 @@ class PartNumberRepository extends ServiceEntityRepository implements PartNumber
 
     
     
-    public function storePartNumber(PartNumber $partNumberObj) 
+    public function storePartNumber(PartNumber $partNumberObj): PartNumber
     {
          $this->_em->persist($partNumberObj);
-         
          $this->_em->flush();
+         return $partNumberObj;
     }
     
     
@@ -39,15 +41,39 @@ class PartNumberRepository extends ServiceEntityRepository implements PartNumber
     }
     
     
-    public function searchParts($number) 
+    public function getParts(PartBrand $brandObj): array
     {
-        
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            select part from App\Entity\PartNumber part
+            where part.partBrand = :brandObj'
+                )->setParameter('brandObj', $brandObj);
+        return $query->getResult();
     }
     
     
-    public function searchPart($number, $brandId): PartNumber
+    
+    
+    public function searchParts($number) 
     {
-        
+         return $this->createQueryBuilder('partNumber')
+            ->andWhere('partNumber.number = :number')
+            ->setParameter('number', $number)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+    
+    public function searchPart($number, PartBrand $brandObj): ?PartNumber
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            select part from App\Entity\PartNumber part
+            where part.partBrand = :brandObj and part.number = :number'
+                )->setParameter('brandObj', $brandObj)
+                ->setParameter('number', $number);
+        return $query->getOneOrNullResult();
     }
     
     

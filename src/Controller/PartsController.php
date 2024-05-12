@@ -10,30 +10,37 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\PartsService;
 use App\Form\Type\BrandFormType;
 use App\Form\Type\PartFormType;
-use App\Form\Type\PartsOfferFormType;
 
 
 class PartsController extends AbstractController
 {
-    #[Route('/parts', name: 'app_parts')]
-    public function partsList(PartsService $partsServ ): Response
+    
+    private $partsServ;
+    
+    public function __construct(PartsService $partsServ)
     {
+        $this->partsServ = $partsServ;
+    }
+    
+    #[Route('/parts/{brandId}', name: 'app_parts', defaults: ['brandId' => 0])]
+    public function partsList($brandId): Response
+    {
+        $brandObj = $this->partsServ->getPartBrand($brandId);
+        $partsObj = $this->partsServ->getParts($brandObj);
         
-        $partsServ->getPartBrand(10);
-        
-        return $this->render('parts/index.html.twig', [
-            'controller_name' => 'PartsController',
+        return $this->render('parts/parts.html.twig', [
+            'partsObj' => $partsObj,
         ]);
     }
     
     #[Route('/brands', name: 'app_brands')]
-    public function brandsList(PartsService $partsServ ): Response
+    public function brandsList(): Response
     {
         
-        $partsServ->getPartBrand(10);
+        $allBrands = $this->partsServ->getBrands();
         
-        return $this->render('parts/index.html.twig', [
-            'controller_name' => 'PartsController',
+        return $this->render('parts/brands.html.twig', [
+            'brandsObj' => $allBrands,
         ]);
     }
     
@@ -46,9 +53,7 @@ class PartsController extends AbstractController
         $form = $this->createForm(BrandFormType::class, $partBrand);
         
         //$form->handleRequest($request);
-        
-         
-         
+
         return $this->render('parts/addBrand.html.twig',[
             'form' => $form,
         ]);
@@ -79,27 +84,6 @@ class PartsController extends AbstractController
             'form' => $form,
         ]);
     }
-    
-    
-    
-    
-    #[Route('/addOffer', name: 'app_add_offer')]
-    public function addPartsOffer(PartsService $partsServ ,Request $request): Response
-    {
-        //$partBrand = $partsServ->getPartBrand(5);
-       
-        $form = $this->createForm(PartsOfferFormType::class);
-        
-        $form->handleRequest($request);
-        
-         
-         
-        return $this->render('parts/addBrand.html.twig',[
-            'form' => $form,
-        ]);
-    }
-    
-    
     
     
     

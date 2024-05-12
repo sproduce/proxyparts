@@ -10,7 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\PartsService;
 use App\Form\Type\BrandFormType;
 use App\Form\Type\PartFormType;
-use App\Form\Type\PartsOfferFormType;
 
 
 class AdminController extends AbstractController
@@ -83,22 +82,22 @@ class AdminController extends AbstractController
     
     
     
-    #[Route('/addOffer', name: 'app_add_offer')]
-    public function addPartsOffer(PartsService $partsServ ,Request $request): Response
-    {
-        //$partBrand = $partsServ->getPartBrand(5);
-       
-        $form = $this->createForm(PartsOfferFormType::class);
-        
-        $form->handleRequest($request);
-        
-         
-         
-        return $this->render('parts/addBrand.html.twig',[
-            'form' => $form,
-        ]);
-    }
-    
+//    #[Route('/addOffer', name: 'app_add_offer')]
+//    public function addPartsOffer(PartsService $partsServ ,Request $request): Response
+//    {
+//        //$partBrand = $partsServ->getPartBrand(5);
+//       
+//        $form = $this->createForm(PartsOfferFormType::class);
+//        
+//        $form->handleRequest($request);
+//        
+//         
+//         
+//        return $this->render('parts/addBrand.html.twig',[
+//            'form' => $form,
+//        ]);
+//    }
+//    
     
     
     

@@ -31,11 +31,11 @@
                             {{ app.user.email }}
                         </a>
                         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-                            <li><a class="dropdown-item" href="/parts/user"><i class="fas fa-list me-2"></i>Запчасти</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_user_offers') }}"><i class="fas fa-list me-2"></i>Запчасти</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/user/profile"><i class="fas fa-user-cog me-2"></i>Профиль</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_user_profile') }}"><i class="fas fa-user-cog me-2"></i>Профиль</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Выйти</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Выйти</a></li>
                         </ul>
                     </div>
                 {%  else  %}

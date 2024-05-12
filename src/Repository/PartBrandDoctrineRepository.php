@@ -23,9 +23,9 @@ class PartBrandDoctrineRepository extends ServiceEntityRepository implements Par
         parent::__construct($registry, PartBrand::class);
     }
     
-    public function getBrand($brandId): ?PartBrand
+    public function getBrand($brandId): PartBrand
     {
-        return $this->find($brandId);
+        return $this->find($brandId) ?? new PartBrand();
     }
     
     
@@ -35,10 +35,11 @@ class PartBrandDoctrineRepository extends ServiceEntityRepository implements Par
     }
     
     
-    public function storeBrand(PartBrand $brandObj) 
+    public function storeBrand(PartBrand $brandObj): PartBrand 
     {
         $this->_em->persist($brandObj);
         $this->_em->flush();
+        return $brandObj;
     }
     
     

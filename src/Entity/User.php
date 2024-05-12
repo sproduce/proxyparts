@@ -40,8 +40,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
     private ?string $tgId = null;
 
-    #[ORM\OneToOne(mappedBy: 'userId', cascade: ['persist', 'remove'])]
-    private ?PartsOffer $partsOffer = null;
+    //#[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    //private ?PartsOffer $partsOffer = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -140,22 +140,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPartsOffer(): ?PartsOffer
-    {
-        return $this->partsOffer;
-    }
-
-    public function setPartsOffer(PartsOffer $partsOffer): static
-    {
-        // set the owning side of the relation if necessary
-        if ($partsOffer->getUserId() !== $this) {
-            $partsOffer->setUserId($this);
-        }
-
-        $this->partsOffer = $partsOffer;
-
-        return $this;
-    }
+//    public function getPartsOffer(): ?PartsOffer
+//    {
+//        return $this->partsOffer;
+//    }
+//
+//    public function setPartsOffer(PartsOffer $partsOffer): static
+//    {
+//        // set the owning side of the relation if necessary
+//        if ($partsOffer->getUserId() !== $this) {
+//            $partsOffer->setUserId($this);
+//        }
+//
+//        $this->partsOffer = $partsOffer;
+//
+//        return $this;
+//    }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {

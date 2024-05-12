@@ -11,15 +11,14 @@
 {% block body %}
    
     
-   {# 
     <table class="table table-sm table-striped">
         <thead>
             <tr>
-                <th class="col-10 p-1 text-start">Производители запчастей</th>
-                <th class="col-2 p-1"></th>
+                <th class="col-3 p-1 text-start">Номер</th>
+                <th class="col-9 p-1">Описание</th>
             </tr>
         </thead>    
-        <tbody>
+    {#    <tbody>
             {% for brand in brandsObj %}
                 <tr>
                     <td class="col-10 p-1 text-start"><a href = "{{ path('app_parts') }}/{{ brand.id }}">{{ brand.name }}</a></td>
@@ -27,10 +26,10 @@
                 </tr>
             {% endfor %}
             
-        </tbody>
+        </tbody>#}
     
     </table>
-    #}
+    
     
 {% endblock %}
 

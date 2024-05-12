@@ -5,11 +5,12 @@ namespace App\Entity;
 use App\Repository\PartNumberRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Uid\Uuid;
 use App\Entity\PartBrand;
 
 
 #[ORM\Entity(repositoryClass: PartNumberRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class PartNumber
 {
     #[ORM\Id]
@@ -29,12 +30,9 @@ class PartNumber
     #[ORM\Column(type: Types::GUID)]
     private ?string $uuid = null;
 
-    //#[ORM\ManyToOne(inversedBy: 'partNumbers')]
-    //#[ORM\JoinColumn(nullable: false)]
-    //#[ORM\OneToOne(mappedBy: 'partBrand', targetEntity: PartBrand::class, cascade: ['persist', 'remove'])]
     #[ORM\OneToOne(targetEntity: PartBrand::class)]
     #[JoinColumn(name: 'part_brand_id', referencedColumnName: 'id')]
-    private ?PartBrand $partBrand = null;
+    private PartBrand $partBrand;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -101,7 +99,7 @@ class PartNumber
         return $this;
     }
 
-    public function getPartBrand(): ?PartBrand
+    public function getPartBrand(): PartBrand
     {
         if (!$this->partBrand){
             $this->partBrand = new PartBrand();
@@ -129,5 +127,21 @@ class PartNumber
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+    
+    
+    
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    
+    
+    #[ORM\PrePersist]
+    public function setUuidValue(): void
+    {
+        $this->uuid = Uuid::v4();
     }
 }

@@ -26,6 +26,7 @@ security:
                 # "app_login" is the name of the route created previously
                 login_path: app_login
                 check_path: app_login
+                default_target_path: app_user_offers
                 #username_parameter: email    
                 #password_parameter: passwd
             logout:
@@ -44,6 +45,7 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/test, roles: ROLE_USER }
+        - { path: ^/user, roles: ROLE_USER }
 
 when@test:
     security:

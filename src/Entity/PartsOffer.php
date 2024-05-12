@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\PartsOfferRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PartsOfferRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class PartsOffer
 {
     #[ORM\Id]
@@ -25,6 +27,13 @@ class PartsOffer
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $property = null;
+    
+    
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $userId = null;
+    
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $partId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $info = null;
@@ -38,13 +47,13 @@ class PartsOffer
     #[ORM\Column(type: Types::GUID)]
     private ?string $uuid = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?PartNumber $partId = null;
+    private PartNumber $part;
 
-    #[ORM\OneToOne(inversedBy: 'partsOffer', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private ?User $user = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -62,6 +71,16 @@ class PartsOffer
         return $this;
     }
    
+    
+    public function getPartId(): ?int {
+        return $this->partId;
+    }
+
+    public function setPartId(?int $partId): void {
+        $this->partId = $partId;
+    }
+
+    
     
     public function getPrice(): ?int
     {
@@ -135,7 +154,7 @@ class PartsOffer
         return $this;
     }
 
-    public function getPublic(): ?int
+    public function getPublic(): ?bool
     {
         return $this->public;
     }
@@ -159,26 +178,26 @@ class PartsOffer
         return $this;
     }
 
-    public function getPartId(): ?PartNumber
+    public function getPart(): ?PartNumber
     {
-        return $this->partId;
+        return $this->part;
     }
 
-    public function setPartId(PartNumber $partId): static
+    public function setPart(PartNumber $part): static
     {
-        $this->partId = $partId;
+        $this->part = $part;
 
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(User $userId): static
+    public function setUser(User $user): static
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
@@ -194,4 +213,32 @@ class PartsOffer
 
         return $this;
     }
+    
+    
+    public function getUserId(): ?int {
+        return $this->userId;
+    }
+
+    public function setUserId(?int $userId): void {
+        $this->userId = $userId;
+    }
+
+    
+    
+    
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    
+    #[ORM\PrePersist]
+    public function setUuidValue(): void
+    {
+        $this->uuid = Uuid::v4();
+    }
+    
+    
+    
 }

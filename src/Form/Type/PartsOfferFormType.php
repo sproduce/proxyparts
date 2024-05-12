@@ -21,6 +21,7 @@ class PartsOfferFormType extends AbstractType
     {
         $builder
             ->add('id', HiddenType::class)
+            ->add('property',IntegerType::class)
             ->add('price', IntegerType::class,['required' => false, 'label' => 'Цена'])
             ->add('priceSale', IntegerType::class,['label' => 'Цена продажи', 'required' => false],)
             ->add('amount', IntegerType::class,['label' => 'Количество', 'required' => false],)

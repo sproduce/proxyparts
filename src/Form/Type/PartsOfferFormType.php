@@ -22,12 +22,12 @@ class PartsOfferFormType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('property',IntegerType::class)
-            ->add('price', IntegerType::class,['required' => false, 'label' => 'Цена'])
-            ->add('priceSale', IntegerType::class,['label' => 'Цена продажи', 'required' => false],)
-            ->add('amount', IntegerType::class,['label' => 'Количество', 'required' => false],)
-            ->add('info', TextType::class,['trim' => true, 'required' => false, 'label' => 'Описание'],)
-            ->add('comment', TextType::class,['trim' => true, 'required' => false, 'label' => 'Комментарий',])
-            ->add('public', CheckboxType::class,['required' => false, 'label' => 'Опубликовать',])
+            ->add('price', IntegerType::class,['required' => false, 'label' => 'Price'])
+            ->add('priceSale', IntegerType::class,['label' => 'Price Sale', 'required' => false],)
+            ->add('amount', IntegerType::class,['label' => 'Amount', 'required' => false],)
+            ->add('info', TextType::class,['trim' => true, 'required' => false, 'label' => 'Info'],)
+            ->add('comment', TextType::class,['trim' => true, 'required' => false, 'label' => 'Comment',])
+            ->add('public', CheckboxType::class,['required' => false, 'label' => 'Public',])
             ->add('Part', PartFormType::class,['label' => false,]);
     }
 

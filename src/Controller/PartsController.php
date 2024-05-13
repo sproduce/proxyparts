@@ -86,5 +86,17 @@ class PartsController extends AbstractController
     }
     
     
+    #[Route('/offers/{partId}', name: 'app_offers', defaults: ['partId' => 0])]
+    public function offersList($partId): Response
+    {
+                
+        return $this->render('parts/parts.html.twig', [
+            'partsObj' => $partsObj,
+        ]);
+    }
+    
+    
+    
+    
     
 }

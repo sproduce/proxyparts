@@ -3,29 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\PartBrand;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\DependencyInjection\Attribute\When;
 
 use App\Repository\Interfaces\PartBrandRepositoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @extends ServiceEntityRepository<PartBrand>
- *
- * @method PartBrand|null find($id, $lockMode = null, $lockVersion = null)
- * @method PartBrand|null findOneBy(array $criteria, array $orderBy = null)
- * @method PartBrand[]    findAll()
- * @method PartBrand[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 
-#[When(env: 'dev')]
-#[When(env: 'prod')]
-class PartBrandDoctrineRepository extends ServiceEntityRepository implements PartBrandRepositoryInterface
+#[When(env: 'test')]
+class PartBrandPDORepository implements PartBrandRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, PartBrand::class);
-    }
     
     public function getBrand($brandId): PartBrand
     {

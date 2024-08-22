@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Service\PartsService;
-use App\Form\Type\BrandFormType;
 use App\Form\Type\PartFormType;
 
 
@@ -25,12 +24,17 @@ class PartsController extends AbstractController
     #[Route('/parts/{brandId}', name: 'app_parts', defaults: ['brandId' => 0])]
     public function partsList($brandId): Response
     {
-        $brandObj = $this->partsServ->getPartBrand($brandId);
-        $partsObj = $this->partsServ->getParts($brandObj);
+        if ($brandId){
+            $brandObj = $this->partsServ->getPartBrand($brandId);
+            $partsObj = $this->partsServ->getParts($brandObj);
+            
+            return $this->render('parts/parts.html.twig', [
+                'partsObj' => $partsObj,
+            ]);
+        }
         
-        return $this->render('parts/parts.html.twig', [
-            'partsObj' => $partsObj,
-        ]);
+        return $this->redirectToRoute('app_brands');
+        
     }
     
     #[Route('/brands', name: 'app_brands')]
@@ -44,22 +48,7 @@ class PartsController extends AbstractController
         ]);
     }
     
-    
-    #[Route('/addBrand', name: 'app_add_brand')]
-    public function addBrand(PartsService $partsServ ,Request $request): Response
-    {
-        $partBrand = $partsServ->getPartBrand(5);
-       
-        $form = $this->createForm(BrandFormType::class, $partBrand);
         
-        //$form->handleRequest($request);
-
-        return $this->render('parts/addBrand.html.twig',[
-            'form' => $form,
-        ]);
-    }
-    
-    
     
     #[Route('/addPart', name: 'app_add_part')]
     public function addPart(PartsService $partsServ, Request $request): Response
@@ -89,10 +78,18 @@ class PartsController extends AbstractController
     #[Route('/offers/{partId}', name: 'app_offers', defaults: ['partId' => 0])]
     public function offersList($partId): Response
     {
-                
-        return $this->render('parts/parts.html.twig', [
-            'partsObj' => $partsObj,
-        ]);
+        
+        $partObj = $this->partsServ->getPartNumber($partId);
+        
+        
+        
+        if ($partId){
+            return $this->render('parts/offers.html.twig', [
+                'offersObj' => $offersObj,
+            ]);
+        }
+        
+        return $this->redirectToRoute('app_brands');
     }
     
     

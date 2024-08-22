@@ -42,8 +42,12 @@ class UserController extends AbstractController
     public function addPartsOffer(int $id , PartsService $partsServ ,Request $request): Response
     {
         $partsOffer = $partsServ->getUserOffer($id, $this->userObj);
-       
-        $form = $this->createForm(PartsOfferFormType::class, $partsOffer);
+        if ($id) {
+            $form = $this->createForm(PartsOfferFormType::class, $partsOffer, ['Save' => 'Save']);
+        }  else {
+            $form = $this->createForm(PartsOfferFormType::class, $partsOffer);
+        }
+        
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

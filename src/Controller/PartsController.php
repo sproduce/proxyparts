@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Service\PartsService;
 use App\Form\Type\PartFormType;
+use App\Form\Type\BrandFormType;
 
 
 class PartsController extends AbstractController
@@ -50,6 +51,25 @@ class PartsController extends AbstractController
     
         
     
+    #[Route('/addBrand/{brandId}', name: 'app_add_brand', defaults: ['brandId' => 0])]
+    public function addBrand(PartsService $partsServ ,Request $request, $brandId): Response 
+    {
+        $partBrand = $partsServ->getPartBrand($brandId);
+       
+        $form = $this->createForm(BrandFormType::class, $partBrand);
+        
+        //$form->handleRequest($request);
+        
+         
+         
+        return $this->render('parts/addBrand.html.twig',[
+            'form' => $form,
+        ]);
+        
+    }
+
+
+
     #[Route('/addPart', name: 'app_add_part')]
     public function addPart(PartsService $partsServ, Request $request): Response
     {

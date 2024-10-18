@@ -13,6 +13,6 @@ interface PartNumberRepositoryInterface {
     public function getPart($partId): ?PartNumber;
     public function getParts(PartBrand $brandObj): array;
     public function searchParts($number);
-    public function searchPart($number, PartBrand $brandObj): ?PartNumber;
+    public function searchPart($number, PartBrand $brandObj): PartNumber;
     
 }

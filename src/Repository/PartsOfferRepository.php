@@ -31,9 +31,10 @@ class PartsOfferRepository extends ServiceEntityRepository implements PartsOffer
     
     public function getPartsOffer($offerId): PartsOffer 
     {
-        $offerResult = null;
         if ($offerId){
             $offerResult = $this->find($offerId);
+        } else {
+            $offerResult = null;
         }
         return $offerResult ?? new PartsOffer();
     }
@@ -53,8 +54,7 @@ class PartsOfferRepository extends ServiceEntityRepository implements PartsOffer
     
     public function getPartsOffers(User $userObj): array 
     {
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('
+        $query = $this->_em->createQuery('
             select offer from App\Entity\PartsOffer offer
             where offer.user = :userObj'
                 )->setParameter('userObj', $userObj);

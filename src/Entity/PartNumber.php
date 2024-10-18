@@ -9,6 +9,15 @@ use Symfony\Component\Uid\Uuid;
 use App\Entity\PartBrand;
 
 
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+
+
+#[Assert\DisableAutoMapping]
+
+
+
 #[ORM\Entity(repositoryClass: PartNumberRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class PartNumber

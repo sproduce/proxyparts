@@ -90,36 +90,71 @@ class PartsService {
         return $this->partsOfferRep->getPartsOffers($userObj);
     }
     
-    public function getUserOffer($offerId, User $userObj): PartsOffer
+    
+    
+    public function getUserOffer(User $userObj, $offerId = 0): PartsOffer
     {
         $offerObj = $this->partsOfferRep->getPartsOffer($offerId);
         if ($offerObj->getUserId() == $userObj->getId() || is_null($offerObj->getId())) {
             return $offerObj;
         }
-        else {return new PartsOffer();}
+        else {
+            return $this->partsOfferRep->getPartsOffer(0);
+        }
     }
     
     
     
     public function storeUserOffer(PartsOffer $partsOffer, User $userObj) 
     {
-        $offerPartObj = $partsOffer->getPart();
-        $offerBrandObj = $offerPartObj->getPartBrand();
+              
         
-        $brandObj = $this->partBrandRep->getBrandByName($offerBrandObj->getName());
-            if (!$brandObj) {
-                $brandObj = $this->partBrandRep->storeBrand($offerBrandObj);
-            } 
-        $offerPartObj->setPartBrand($brandObj);
-        $offerPartObj->setNumber($this->clearNumberL($offerPartObj->getNumberText()));
-        $partObj = $this->partNumberRep->searchPart($offerPartObj->getNumber(), $brandObj);
-        if (!$partObj) {
-            $partObj = $this->partNumberRep->storePartNumber($offerPartObj);
+        
+        
+        
+        $brandName = $partsOffer->getPart()->getPartBrand()->getName();
+        
+        $brandObj = $this->partBrandRep->getBrandByName($brandName);
+        $partsOffer->getPart()->setPartBrand($brandObj);
+        if (!$brandObj->getId()) {
+            $brandObj = $this->partBrandRep->storeBrand($brandObj);
         }
-        $partsOffer->setPart($partObj);
-        $partsOffer->setUser($userObj);
         
-        $this->partsOfferRep->storePartsOffer($partsOffer);
+                
+        $partsOffer->getPart()->setPartBrand($brandObj);
+        
+        $partNumber = $partsOffer->getPart()->getNumberText();
+        
+        $partsOffer->setPart($this->partNumberRep->searchPart($partNumber, $brandObj));
+        
+        
+        
+        
+        
+        //$this->partBrandRep->storeBrand($partsOffer->getPart()->getPartBrand());
+        
+
+//        
+//        $partNumber = $this->clearNumberL($partsOffer->getPart()->getNumber());
+//        $partObj = $this->partNumberRep->searchPart($partNumber, $brandObj);
+//        $partsOffer->setPart($partObj);
+        
+//        if (!$partsOffer->getPart()->getId()) {
+//            $this->partBrandRep->storeBrand($partsOffer->getPart());
+//        } 
+//            
+//        $offerPartObj->setPartBrand($brandObj);
+//        $offerPartObj->setNumber($this->clearNumberL($offerPartObj->getNumberText()));
+//        $partObj = $this->partNumberRep->searchPart($offerPartObj->getNumber(), $brandObj);
+//        
+//        if (!$partObj) {
+//            $partObj = $this->partNumberRep->storePartNumber($offerPartObj);
+//        }
+//        
+//        $partsOffer->setPart($partObj);
+//        $partsOffer->setUser($userObj);
+        
+   //     $this->partsOfferRep->storePartsOffer($partsOffer);
         
     }
     

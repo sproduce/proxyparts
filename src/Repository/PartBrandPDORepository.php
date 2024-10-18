@@ -26,14 +26,14 @@ class PartBrandPDORepository implements PartBrandRepositoryInterface
     
     public function storeBrand(PartBrand $brandObj): PartBrand 
     {
-        $this->_em->persist($brandObj);
-        $this->_em->flush();
+//        $this->_em->persist($brandObj);
+//        $this->_em->flush();
         return $brandObj;
     }
     
     
     
-    public function getBrandByName($name): ?PartBrand
+    public function getBrandByName($name): PartBrand
     {
         return $this->findOneBy(['name' => $name]);
     }

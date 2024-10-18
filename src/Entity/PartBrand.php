@@ -8,18 +8,23 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 
-
 #[ORM\Entity(repositoryClass: PartBrandRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Производитель уже добавлен')]
 class PartBrand
 {
+    
+    public function __construct($name = '') {
+        $this->name = $name;
+    }
+      
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    private ?string $name = null;
+    private string $name = '';
 
     
     public function getId(): ?int
@@ -39,7 +44,7 @@ class PartBrand
         return $this;
     }
 
-   public function setId(int $id): static
+   public function setId(?int $id): static
     {
         $this->id = $id;
 

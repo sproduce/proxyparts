@@ -43,14 +43,20 @@ class PartBrandDoctrineRepository extends ServiceEntityRepository implements Par
     {
         $this->_em->persist($brandObj);
         $this->_em->flush();
+        
         return $brandObj;
     }
     
     
     
-    public function getBrandByName($name): ?PartBrand
+    public function getBrandByName($name): PartBrand
     {
-        return $this->findOneBy(['name' => $name]);
+        $partBrand = $this->findOneBy(['name' => $name]);
+        if (!$partBrand) {
+            $partBrand = new PartBrand($name);
+        }
+        
+        return $partBrand;
     }
     
     

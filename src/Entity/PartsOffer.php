@@ -7,6 +7,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
+
+
+#[Assert\DisableAutoMapping]
+
+
 #[ORM\Entity(repositoryClass: PartsOfferRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class PartsOffer
@@ -223,8 +230,7 @@ class PartsOffer
         $this->userId = $userId;
     }
 
-    
-    
+       
     
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void

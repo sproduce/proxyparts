@@ -38,27 +38,46 @@ class UserController extends AbstractController
     
     
     
-    #[Route('/user/addOffer/{id}', name: 'app_user_add_offer', defaults: ['id' => 0])]
-    public function addPartsOffer(int $id , PartsService $partsServ ,Request $request): Response
+    #[Route('/user/addOffer/{id}', name: 'app_user_add_offer', defaults: ['id' => 0], methods: ['GET'])]
+    public function addPartsOffer(int $id , PartsService $partsServ): Response
     {
-        $partsOffer = $partsServ->getUserOffer($id, $this->userObj);
-        if ($id) {
-            $form = $this->createForm(PartsOfferFormType::class, $partsOffer, ['Save' => 'Save']);
-        }  else {
-            $form = $this->createForm(PartsOfferFormType::class, $partsOffer);
+        $partsOffer = $partsServ->getUserOffer($this->userObj, $id);
+        
+        if ($partsOffer->getId()) {
+            $formOptions = ['Save' => 'Save'];
+        } else {
+            $formOptions = [];
         }
         
+        $form = $this->createForm(PartsOfferFormType::class, $partsOffer, $formOptions);
+         
+        return $this->render('defaultForm.html.twig',[
+            'form' => $form,
+        ]);
+    }
+    
+    
+    #[Route('/user/addOffer/{_id}', name: 'app_user_store_offer', methods: ['POST'])]
+    public function storePartsOffer(PartsService $partsServ ,Request $request): Response
+    {
+        $partsOffer = $partsServ->getUserOffer($this->userObj);
+        $form = $this->createForm(PartsOfferFormType::class, $partsOffer);
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $partsServ->storeUserOffer($partsOffer, $this->userObj);
-           return $this->redirectToRoute('app_user_offers');
+            $this->addFlash('success', 'Запчасть Сохранена');
+            return $this->redirectToRoute('app_user_offers');
         } 
          
         return $this->render('defaultForm.html.twig',[
             'form' => $form,
         ]);
     }
+    
+    
+    
+    
     
     
     

@@ -65,7 +65,7 @@ class PartNumberRepository extends ServiceEntityRepository implements PartNumber
     }
     
     
-    public function searchPart($number, PartBrand $brandObj): ?PartNumber
+    public function searchPart($number, PartBrand $brandObj): PartNumber
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('

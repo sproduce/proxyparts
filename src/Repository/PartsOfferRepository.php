@@ -42,7 +42,14 @@ class PartsOfferRepository extends ServiceEntityRepository implements PartsOffer
     
     public function storePartsOffer(PartsOffer $partsOfferObj): PartsOffer 
     {
-        $this->_em->persist($partsOfferObj);
+        if ($partsOfferObj->getId()){
+            $object = $this->find($partsOfferObj->getId());
+            $object->setPart($partsOfferObj->getPart());
+            $object->setPrice($partsOfferObj->getPrice());
+        } else {
+          $this->_em->persist($partsOfferObj);  
+        }
+        
         $this->_em->flush();
         return $partsOfferObj;
     }
@@ -54,10 +61,12 @@ class PartsOfferRepository extends ServiceEntityRepository implements PartsOffer
     
     public function getPartsOffers(User $userObj): array 
     {
-        $query = $this->_em->createQuery('
-            select offer from App\Entity\PartsOffer offer
-            where offer.user = :userObj'
-                )->setParameter('userObj', $userObj);
+        $query = $this->_em->createQuery('select offer, part, partBrand
+                from App\Entity\PartsOffer offer
+                INNER JOIN offer.part part
+                INNER JOIN part.partBrand partBrand
+                where offer.user = :userObj')->setParameter('userObj', $userObj);
+        
         return $query->getResult();
     }
     

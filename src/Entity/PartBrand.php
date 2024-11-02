@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
-
 #[ORM\Entity(repositoryClass: PartBrandRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Производитель уже добавлен')]
+
 class PartBrand
 {
     

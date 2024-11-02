@@ -38,9 +38,11 @@ class PartNumber
 
     #[ORM\Column(type: Types::GUID)]
     private ?string $uuid = null;
-
-    #[ORM\OneToOne(targetEntity: PartBrand::class)]
+    
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    //#[ORM\ManyToOne(targetEntity: PartBrand::class)]
     #[JoinColumn(name: 'part_brand_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(nullable: false)]
     private PartBrand $partBrand;
 
     #[ORM\Column]

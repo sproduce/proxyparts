@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+use Symfony\Bundle\SecurityBundle\Security;
+
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Form\Type\RegistrationFormType;
@@ -34,7 +37,11 @@ class AuthController extends AbstractController
     }
     
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request,
+            UserPasswordHasherInterface $userPasswordHasher, 
+            EntityManagerInterface $entityManager,
+            Security $security
+            ): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -50,6 +57,8 @@ class AuthController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+            $security->login($user, 'remember_me');
+
             return $this->redirectToRoute('app_index');
         }
 

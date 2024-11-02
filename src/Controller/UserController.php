@@ -38,15 +38,14 @@ class UserController extends AbstractController
     
     
     
-    #[Route('/user/addOffer/{id}', name: 'app_user_add_offer', defaults: ['id' => 0], methods: ['GET'])]
+    #[Route('/user/addOffer/{id}', methods: ['GET'] , name: 'app_user_add_offer', defaults: ['id' => 0])]
     public function addPartsOffer(int $id , PartsService $partsServ): Response
     {
         $partsOffer = $partsServ->getUserOffer($this->userObj, $id);
+        $formOptions = ['action' => $this->generateUrl('app_user_store_offer')];
         
         if ($partsOffer->getId()) {
-            $formOptions = ['Save' => 'Save'];
-        } else {
-            $formOptions = [];
+            $formOptions += ['Save' => 'Save'];
         }
         
         $form = $this->createForm(PartsOfferFormType::class, $partsOffer, $formOptions);
@@ -57,7 +56,7 @@ class UserController extends AbstractController
     }
     
     
-    #[Route('/user/addOffer/{_id}', name: 'app_user_store_offer', methods: ['POST'])]
+    #[Route('/user/addOffer', methods: ['POST'] , name: 'app_user_store_offer')]
     public function storePartsOffer(PartsService $partsServ ,Request $request): Response
     {
         $partsOffer = $partsServ->getUserOffer($this->userObj);
@@ -65,14 +64,17 @@ class UserController extends AbstractController
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($partsOffer->getId()){
+                $this->addFlash('success', 'Запчасть Сохранена');
+            } else {
+                $this->addFlash('success', 'Запчасть Добавлена');
+            }
             $partsServ->storeUserOffer($partsOffer, $this->userObj);
-            $this->addFlash('success', 'Запчасть Сохранена');
+            
             return $this->redirectToRoute('app_user_offers');
         } 
          
-        return $this->render('defaultForm.html.twig',[
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('/');
     }
     
     

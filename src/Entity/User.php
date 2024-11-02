@@ -11,9 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 
 
-
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'Такой адрес уже зарегистрирован')]
+#[UniqueEntity(fields: ['email'], message: 'This address is already registered')]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

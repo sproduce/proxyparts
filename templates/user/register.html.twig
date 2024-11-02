@@ -18,8 +18,8 @@
             {{ form_start(registrationForm,{'attr': {'id': 'registerForm'}}) }}
                 {{ form_row(registrationForm.email) }}
                 {#{{ form_row(form.name) }}#}
-                {{ form_row(registrationForm.plainPassword.first, {'label': 'Пароль'}) }}
-                {{ form_row(registrationForm.plainPassword.second, {'label': 'Пароль еще раз'}) }}
+                {{ form_row(registrationForm.plainPassword.first)}}
+                {{ form_row(registrationForm.plainPassword.second)}}
                 {#<div class="mb-3"> This site is protected by reCAPTCHA and the Google
                 <a href="https://policies.google.com/privacy">Privacy Policy</a> and
                 <a href="https://policies.google.com/terms">Terms of Service</a> apply.</div>

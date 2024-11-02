@@ -29,13 +29,13 @@ security:
                 default_target_path: app_user_offers
                 #username_parameter: email    
                 #password_parameter: passwd
-            logout:
-                path: app_logout
-                target: /
             remember_me:
                 secret:   '%kernel.secret%'
                 lifetime: 604800    
                 always_remember_me: true
+            logout:
+                path: app_logout
+                target: /
             login_throttling: 
                 max_attempts: 3 
                 interval: '5 minutes'

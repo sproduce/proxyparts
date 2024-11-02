@@ -33,7 +33,7 @@ class PartsService {
     
     private function clearNumberL($number)
     {
-        return preg_replace("/[^a-z0-9 ]/","", trim(strtolower($number)));
+        return preg_replace("/[^a-z0-9]/","", trim(strtolower($number)));
     }
     
     
@@ -107,55 +107,35 @@ class PartsService {
     
     public function storeUserOffer(PartsOffer $partsOffer, User $userObj) 
     {
-              
         
+        //$testOffer = $this->partsOfferRep->getPartsOffer($partsOffer->getId());
+        //$testOffer->setPrice(8888);
         
-        
+        $partsOffer->setUser($userObj);
         
         $brandName = $partsOffer->getPart()->getPartBrand()->getName();
         
         $brandObj = $this->partBrandRep->getBrandByName($brandName);
-        $partsOffer->getPart()->setPartBrand($brandObj);
-        if (!$brandObj->getId()) {
+        if (is_null($brandObj->getId())){
             $brandObj = $this->partBrandRep->storeBrand($brandObj);
         }
+              
         
-                
         $partsOffer->getPart()->setPartBrand($brandObj);
         
+                
         $partNumber = $partsOffer->getPart()->getNumberText();
+        $partNumberClear = $this->clearNumberL($partNumber);
         
-        $partsOffer->setPart($this->partNumberRep->searchPart($partNumber, $brandObj));
+        $partObj = $this->partNumberRep->searchPart($partNumberClear, $brandObj);
+        if (is_null($partObj->getId())){
+            $partObj->setNumberText($partNumber);
+        }
         
+        $partsOffer->setPart($partObj);
         
-        
-        
-        
-        //$this->partBrandRep->storeBrand($partsOffer->getPart()->getPartBrand());
-        
-
-//        
-//        $partNumber = $this->clearNumberL($partsOffer->getPart()->getNumber());
-//        $partObj = $this->partNumberRep->searchPart($partNumber, $brandObj);
-//        $partsOffer->setPart($partObj);
-        
-//        if (!$partsOffer->getPart()->getId()) {
-//            $this->partBrandRep->storeBrand($partsOffer->getPart());
-//        } 
-//            
-//        $offerPartObj->setPartBrand($brandObj);
-//        $offerPartObj->setNumber($this->clearNumberL($offerPartObj->getNumberText()));
-//        $partObj = $this->partNumberRep->searchPart($offerPartObj->getNumber(), $brandObj);
-//        
-//        if (!$partObj) {
-//            $partObj = $this->partNumberRep->storePartNumber($offerPartObj);
-//        }
-//        
-//        $partsOffer->setPart($partObj);
-//        $partsOffer->setUser($userObj);
-        
-   //     $this->partsOfferRep->storePartsOffer($partsOffer);
-        
+        $this->partsOfferRep->storePartsOffer($partsOffer);
+              
     }
     
     

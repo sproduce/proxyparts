@@ -5,11 +5,17 @@ $(function() {
     
     
     $('#modal-dialog').on('shown.bs.modal', function (e) {
-    })
+      
+    });
 
     $('.sumToText').each(function(){
         $(this).text($(this).text().replace(/\B(?=(\d{3})+(?!\d))/g, "`"));
     });
+
+    $(".alert").delay(5000).fadeTo("slow", 0).slideUp(500, function(){
+        $(this).remove();
+    });
+
 
 });
 

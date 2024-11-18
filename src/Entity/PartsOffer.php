@@ -32,12 +32,20 @@ class PartsOffer
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $amount = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $property = null;
     
     
-    #[ORM\Column(type: Types::SMALLINT)]
+    
+    #[ORM\ManyToOne(targetEntity: OfferProperty::class)]
+    #[ORM\JoinColumn(name: 'property_id', referencedColumnName: 'id')]
+    private OfferProperty $property;
+    
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $userId = null;
+   
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $propertyId = null;
+    
     
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $partId = null;
@@ -54,17 +62,29 @@ class PartsOffer
     #[ORM\Column(type: Types::GUID)]
     private ?string $uuid = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: PartNumber::class)]
+    #[ORM\JoinColumn(name: 'part_id', referencedColumnName: 'id')]
     private PartNumber $part;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    private ?User $user = null;
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private User $user;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    
+    
+    public function __construct(){
+        $this->part = new PartNumber();
+        //$this->user = new User();
+        //$this->property = new OfferProperty();
+    }
+    
+    
+    
+    
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -125,12 +145,12 @@ class PartsOffer
         return $this;
     }
 
-    public function getProperty(): ?int
+    public function getProperty(): OfferProperty
     {
         return $this->property;
     }
 
-    public function setProperty(int $property): static
+    public function setProperty(OfferProperty $property): static
     {
         $this->property = $property;
 
@@ -185,7 +205,7 @@ class PartsOffer
         return $this;
     }
 
-    public function getPart(): ?PartNumber
+    public function getPart(): PartNumber
     {
         return $this->part;
     }
@@ -230,7 +250,17 @@ class PartsOffer
         $this->userId = $userId;
     }
 
-       
+
+    public function getPropertyId(): ?int {
+        return $this->propertyId;
+    }
+    
+    public function setPropertyId(?int $propertyId): void {
+        $this->propertyId = $propertyId;
+    }
+
+        
+    
     
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
@@ -245,6 +275,9 @@ class PartsOffer
         $this->uuid = Uuid::v4();
     }
     
+
+
+
     
     
 }

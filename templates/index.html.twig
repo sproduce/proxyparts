@@ -49,8 +49,8 @@
     <header class="py-1 mb-4 border-bottom">
         {#{{ dump(app.flashes()) }}#}
         {% for message in app.flashes('success') %}
-            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                {{ message }}
+            <div class="alert alert-success alert-dismissible fade show text-center" data-number="{{ loop.index }}" role="alert">
+                {{ message|trans(app.flashes('success'),'flashMessage') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}

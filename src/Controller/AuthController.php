@@ -57,6 +57,8 @@ class AuthController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success', 'registered');
+
             $security->login($user, 'remember_me');
 
             return $this->redirectToRoute('app_index');

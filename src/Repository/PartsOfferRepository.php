@@ -33,22 +33,16 @@ class PartsOfferRepository extends ServiceEntityRepository implements PartsOffer
     {
         if ($offerId){
             $offerResult = $this->find($offerId);
-        } else {
-            $offerResult = null;
-        }
+        } 
         return $offerResult ?? new PartsOffer();
     }
     
     
     public function storePartsOffer(PartsOffer $partsOfferObj): PartsOffer 
     {
-        if ($partsOfferObj->getId()){
-            $object = $this->find($partsOfferObj->getId());
-            $object->setPart($partsOfferObj->getPart());
-            $object->setPrice($partsOfferObj->getPrice());
-        } else {
-          $this->_em->persist($partsOfferObj);  
-        }
+        if (!$this->_em->contains($partsOfferObj)){
+            $this->_em->persist($partsOfferObj);  
+        } 
         
         $this->_em->flush();
         return $partsOfferObj;

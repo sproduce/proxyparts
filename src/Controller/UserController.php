@@ -42,12 +42,16 @@ class UserController extends AbstractController
     public function addPartsOffer(int $id , PartsService $partsServ): Response
     {
         $partsOffer = $partsServ->getUserOffer($this->userObj, $id);
+        //$offerPropertys = $partsServ->getOfferPropertys();
         $formOptions = ['action' => $this->generateUrl('app_user_store_offer')];
+        
+        
         
         if ($partsOffer->getId()) {
             $formOptions += ['Save' => 'Save'];
         }
         
+                
         $form = $this->createForm(PartsOfferFormType::class, $partsOffer, $formOptions);
          
         return $this->render('defaultForm.html.twig',[
@@ -62,6 +66,7 @@ class UserController extends AbstractController
         $partsOffer = $partsServ->getUserOffer($this->userObj);
         $form = $this->createForm(PartsOfferFormType::class, $partsOffer);
         
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($partsOffer->getId()){
@@ -69,6 +74,7 @@ class UserController extends AbstractController
             } else {
                 $this->addFlash('success', 'Запчасть Добавлена');
             }
+            var_dump($partsOffer);
             $partsServ->storeUserOffer($partsOffer, $this->userObj);
             
             return $this->redirectToRoute('app_user_offers');

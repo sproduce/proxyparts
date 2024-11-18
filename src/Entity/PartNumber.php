@@ -38,16 +38,24 @@ class PartNumber
 
     #[ORM\Column(type: Types::GUID)]
     private ?string $uuid = null;
-    
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
-    //#[ORM\ManyToOne(targetEntity: PartBrand::class)]
+   
+   
+    #[ORM\ManyToOne(targetEntity: PartBrand::class, cascade: ['persist'])]
     #[JoinColumn(name: 'part_brand_id', referencedColumnName: 'id')]
-    #[ORM\JoinColumn(nullable: false)]
     private PartBrand $partBrand;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    
+    
+    
+    
+    public function __construct(){
+        $this->partBrand = new PartBrand();
+    }
+    
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -121,7 +129,7 @@ class PartNumber
     
     
     
-    public function setPartBrand(?PartBrand $partBrand): static
+    public function setPartBrand(PartBrand $partBrand): static
     {
         $this->partBrand = $partBrand;
 

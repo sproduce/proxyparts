@@ -28,9 +28,13 @@ class PartNumberRepository extends ServiceEntityRepository implements PartNumber
     
     
     public function storePartNumber(PartNumber $partNumberObj): PartNumber
-    {
-         $this->_em->persist($partNumberObj);
+    {   
+        if (!$this->_em->contains($partNumberObj)){
+            $this->_em->persist($partNumberObj);
+        }
+
          $this->_em->flush();
+         
          return $partNumberObj;
     }
     

@@ -13,19 +13,18 @@ use App\Entity\User;
 use App\Repository\Interfaces\PartBrandRepositoryInterface;
 use App\Repository\Interfaces\PartNumberRepositoryInterface;
 use App\Repository\Interfaces\PartsOfferRepositoryInterface;
+use App\Repository\Interfaces\OfferPropertyRepositoryInterface;
 
 
 
 class PartsService {
-//    private $partBrandRep;
-//    private $partNumberRep;
-//    private $partsOfferRep;
     
-    public function __construct(private PartBrandRepositoryInterface $partBrandRep, private PartNumberRepositoryInterface $partNumberRep, private PartsOfferRepositoryInterface $partsOfferRep)
-    {
-//        $this->partBrandRep = $partBrandRep;
-//        $this->partNumberRep = $partNumberRep;
-//        $this->partsOfferRep = $partsOfferRep;
+    public function __construct(private PartBrandRepositoryInterface $partBrandRep, 
+            private PartNumberRepositoryInterface $partNumberRep, 
+            private PartsOfferRepositoryInterface $partsOfferRep,
+            private OfferPropertyRepositoryInterface $offerPropertyRep,
+    ){
+
     }
     
     
@@ -38,10 +37,29 @@ class PartsService {
     
     
     
+    
+    
+    public function getOfferPropertys() 
+    {
+        return $this->offerPropertyRep->getOfferPropertys();
+    }
+    
+    
+    
     public function getPartBrand($id): PartBrand
     {
        return $this->partBrandRep->getBrand($id) ?? new PartBrand();
     }
+    
+    public function getBrandByName($brandName): PartBrand
+    {
+        $brandObj = $this->partBrandRep->getBrandByName($brandName);
+        if (is_null($brandObj->getId())){
+            $brandObj = $this->partBrandRep->storeBrand($brandObj);
+        }
+        return $brandObj;
+    }
+    
     
     
     public function getBrands(): ?array
@@ -62,6 +80,19 @@ class PartsService {
     }
     
     
+    public function getPartByNumber($partNumber, PartBrand $brandObj): PartNumber
+    {
+        $partNumberClear = $this->clearNumberL($partNumber);
+        
+        $partObj = $this->partNumberRep->searchPart($partNumberClear, $brandObj);
+        if (is_null($partObj->getId())){
+            $partObj->setNumberText($partNumber);
+            $partObj = $this->partNumberRep->storePartNumber($partObj);
+        }
+        return $partObj;
+    }
+    
+    
     public function storePartNumber(PartNumber $partNumberObj) 
     {
         $this->partNumberRep->storePartNumber($partNumberObj);
@@ -76,6 +107,7 @@ class PartsService {
     
     public function getPartOffers($partObj)
     {
+        
         
     }
     
@@ -105,33 +137,25 @@ class PartsService {
     
     
     
-    public function storeUserOffer(PartsOffer $partsOffer, User $userObj) 
+    
+    public function storeUserOffer(PartsOffer $partsOfferForm, User $userObj) 
     {
-        
-        //$testOffer = $this->partsOfferRep->getPartsOffer($partsOffer->getId());
-        //$testOffer->setPrice(8888);
+        $partsOffer = $this->partsOfferRep->getPartsOffer($partsOfferForm->getId());
         
         $partsOffer->setUser($userObj);
-        
-        $brandName = $partsOffer->getPart()->getPartBrand()->getName();
-        
-        $brandObj = $this->partBrandRep->getBrandByName($brandName);
-        if (is_null($brandObj->getId())){
-            $brandObj = $this->partBrandRep->storeBrand($brandObj);
-        }
-              
-        
+        $partsOffer->setProperty($partsOfferForm->getProperty());
+        $partsOffer->setAmount($partsOfferForm->getAmount());
+        $partsOffer->setComment($partsOfferForm->getComment());
+        $partsOffer->setPrice($partsOfferForm->getPrice());
+        $partsOffer->setPriceSale($partsOfferForm->getPriceSale());
+        $partsOffer->setPublic($partsOfferForm->getPublic());
+
+        $brandName = $partsOfferForm->getPart()->getPartBrand()->getName();
+        $brandObj = $this->getBrandByName($brandName);
         $partsOffer->getPart()->setPartBrand($brandObj);
-        
                 
-        $partNumber = $partsOffer->getPart()->getNumberText();
-        $partNumberClear = $this->clearNumberL($partNumber);
-        
-        $partObj = $this->partNumberRep->searchPart($partNumberClear, $brandObj);
-        if (is_null($partObj->getId())){
-            $partObj->setNumberText($partNumber);
-        }
-        
+        $partNumber = $partsOfferForm->getPart()->getNumberText();
+        $partObj = $this->getPartByNumber($partNumber, $brandObj);
         $partsOffer->setPart($partObj);
         
         $this->partsOfferRep->storePartsOffer($partsOffer);

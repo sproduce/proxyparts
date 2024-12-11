@@ -38,22 +38,18 @@ class PartsOfferFormType extends AbstractType
     {
         $builder
             ->add('id', HiddenType::class)
-                //->add('Property', OfferPropertyFormType::class, ['label' => false,])
             ->add('property',ChoiceType::class, ['label' => false,
-                'choices' => $this->offerPropertyRep->getOfferPropertys(),
-                //'class' => OfferProperty::class,
-                //'mapped' => false,
-                'choice_label' => 'property',
-                
+                    'choices' => $this->offerPropertyRep->getOfferPropertys(),
+                    'choice_label' => 'property',
+                    'label' => 'Property',
                 ])
             ->add('price', IntegerType::class, ['required' => false, 'label' => 'Price'])
             ->add('priceSale', IntegerType::class, ['label' => 'Price Sale', 'required' => false],)
             ->add('amount', IntegerType::class, ['label' => 'Amount', 'required' => false],)
-            ->add('info', TextType::class, ['trim' => true, 'required' => false, 'label' => 'Info'],)
             ->add('comment', TextType::class, ['trim' => true, 'required' => false, 'label' => 'Comment',])
             ->add('public', CheckboxType::class, ['required' => false, 'label' => 'Public',])
-            ->add('Part', PartFormType::class, ['label' => false,])
-            ->add('Save', SubmitType::class, ['label' => $options['Save']]);
+            ->add('part', PartFormType::class, ['label' => false,])
+            ->add('save', SubmitType::class, ['label' => $options['save']]);
                     
     }
 
@@ -61,7 +57,7 @@ class PartsOfferFormType extends AbstractType
     {
         $resolver->setDefaults([
            'data_class' => PartsOffer::class,
-           'Save' => 'Add',
+           'save' => 'Add',
             
         ]);
     }

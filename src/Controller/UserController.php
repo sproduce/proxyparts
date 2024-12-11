@@ -48,14 +48,15 @@ class UserController extends AbstractController
         
         
         if ($partsOffer->getId()) {
-            $formOptions += ['Save' => 'Save'];
+            $formOptions += ['save' => 'Save'];
         }
         
                 
-        $form = $this->createForm(PartsOfferFormType::class, $partsOffer, $formOptions);
-         
-        return $this->render('defaultForm.html.twig',[
-            'form' => $form,
+        $offerObj = $this->createForm(PartsOfferFormType::class, $partsOffer, $formOptions);
+        //var_dump($offerObj);
+        
+        return $this->render('user/addOffer.html.twig',[
+            'offerObj' => $offerObj,
         ]);
     }
     

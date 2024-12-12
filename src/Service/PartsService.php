@@ -80,13 +80,14 @@ class PartsService {
     }
     
     
-    public function getPartByNumber($partNumber, PartBrand $brandObj): PartNumber
+    public function getPartByNumber($partNumber, PartBrand $brandObj, $info): PartNumber
     {
         $partNumberClear = $this->clearNumberL($partNumber);
         
         $partObj = $this->partNumberRep->searchPart($partNumberClear, $brandObj);
         if (is_null($partObj->getId())){
             $partObj->setNumberText($partNumber);
+            $partObj->setInfo($info);
             $partObj = $this->partNumberRep->storePartNumber($partObj);
         }
         return $partObj;
@@ -155,7 +156,7 @@ class PartsService {
         $partsOffer->getPart()->setPartBrand($brandObj);
                 
         $partNumber = $partsOfferForm->getPart()->getNumberText();
-        $partObj = $this->getPartByNumber($partNumber, $brandObj);
+        $partObj = $this->getPartByNumber($partNumber, $brandObj, $partsOfferForm->getPart()->getInfo());
         $partsOffer->setPart($partObj);
         
         $this->partsOfferRep->storePartsOffer($partsOffer);

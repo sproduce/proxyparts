@@ -29,9 +29,8 @@ class UserController extends AbstractController
     public function listOffers(): Response
     {
         $partsOffers = $this->partsServ->getUserOffers($this->userObj);
-        
-        return $this->render('user/parts.html.twig',[
-            'partsOffers' => $partsOffers,
+        return $this->render('user/offers.html.twig',[
+            'partOffers' => $partsOffers,
         ]);
     }
     

@@ -1,0 +1,41 @@
+{% extends  "index.html.twig" %}
+{%  block menu %}   
+    {% include 'menu/parts.html.twig' %}
+{% endblock %}
+
+{% block header %}
+   
+{% endblock %}
+
+
+{% block body %}
+   
+    
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th class="col-3 p-1 text-start">Номер</th>
+                <th class="col-9 p-1">Описание</th>
+            </tr>
+        </thead>    
+        <tbody>
+            {% for part in partsObj %}
+                <tr>
+                    <td class="col-3 p-1 text-start"><a href = "{{ path('app_offers') }}/{{ part.id }}">{{ part.number }}</a></td>
+                    <td class="col-9 p-1"></td>
+                </tr>
+            {% endfor %}
+            
+        </tbody>
+    
+    </table>
+    
+    
+{% endblock %}
+
+
+
+{% block javascripts %}
+  {{ parent() }}
+
+{% endblock %}

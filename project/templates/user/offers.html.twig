@@ -1,0 +1,62 @@
+{% extends "index.html.twig" %}
+
+{%  block menu %}   
+    {% include 'menu/parts.html.twig' %}
+{% endblock %}
+
+{% block header %}
+        <div class="col-12 text-center">Запчасти в наличии</div>
+{% endblock %}
+
+
+{% block body %}
+    {% if partOffers|length %}
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th class="col-1 p-1">Производитель</th>
+                    <th class="col-1 p-1">Номер</th>
+                    <th class="col-5 p-1">Описание</th>
+                    <th class="col-1 p-1">Состояние</th>
+                    <th class="col-1 p-1">Цена</th>
+                    <th class="col-1 p-1">Продажа</th>
+                    <th class="col-1 p-1">Наличие</th>
+                    <th class="col-1 p-1"></th>
+                </tr>
+            </thead>
+        
+            <tbody>
+              {% for offer in partOffers %}
+                  <tr scope="row">
+                      <td class="text-start">{{ offer.part.partBrand.name }}</td>
+                      <td class="">{{ offer.part.number }}</td>
+                      <td class="text-start" title="{{ offer.comment }}">{{ offer.part.info }}</td>
+                      <td class="text-center">{{ offer.property.property }}</td>
+                      <td class="pe-3 text-end">{{ offer.price }}</td>
+                      <td class="pe-3 text-end">{% if offer.priceSale %}{{ offer.priceSale }}{% endif %}</td>
+                      <td class="pe-3">{{ offer.amount }}</td>
+                      <td><div class="float-right">
+                          <a class="btn btn-ssm btn-outline-warning" title="Редактировать" href="{{ path('app_user_add_offer') }}/{{ offer.id }} "><i class="far fa-edit"></i></a>
+                          <a href="/event/delEvent?eventId=65" class="btn btn-ssm btn-outline-danger" title="Удалить" onclick="return confirm('Удалить событие');"><i class="fas fa-trash"></i></a>
+                      </div></td>
+                  </tr>
+              {% else %}
+                  <tr>
+                      <td class="p-1">--</td>
+                      <td class="p-1" title="--">--</td>
+                      <td class="p-1">--</td>
+                      <td class="p-1 pe-3 text-end">--/--</td>
+                      <td></td>
+                  </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}        
+{% endblock %}
+
+
+
+{% block javascripts %}
+  {{ parent() }}
+
+{% endblock %}

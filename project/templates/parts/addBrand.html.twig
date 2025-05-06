@@ -1,0 +1,25 @@
+{% extends  "index.html.twig" %}
+{%  block menu %}   
+    {% include 'menu/parts.html.twig' %}
+{% endblock %}
+
+{% block header %}
+   
+{% endblock %}
+
+
+{% block body %}
+   
+    {{ form_start(form) }}
+    <input type="submit"/>
+    {{ form_end(form) }}
+    
+    
+{% endblock %}
+
+
+
+{% block javascripts %}
+  {{ parent() }}
+
+{% endblock %}

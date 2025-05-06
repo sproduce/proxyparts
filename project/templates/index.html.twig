@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html class="h-100" lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>{% block title %}Система учета наличия автозапчастей{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="/vendor/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+            <link href="/vendor/css/all.min.css" rel="stylesheet">
+            <link href="/css/button.css" rel="stylesheet">
+        {% endblock %}
+        <link rel="icon" href="https://www.proxyparts.ru/favicon.ico" type="image/x-icon">
+    </head>
+    <body class="d-flex flex-column h-100">
+        {%  block dialog %}    
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div id="modal-dialog" class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content" id="modal-content"> </div>
+                </div>
+            </div>
+        {% endblock %}
+        
+        
+        <nav class="bg-light border-bottom">
+            <div class="container d-flex flex-wrap">
+                {%  block menu %}    
+                     {% include 'menu/default.html.twig' %}
+                {% endblock %}
+                {%  if app.user %}
+                    <div class="dropdown text-end">
+                        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle p-2" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ app.user.email }}
+                        </a>
+                        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+                            <li><a class="dropdown-item" href="{{ path('app_user_offers') }}"><i class="fas fa-list me-2"></i>Запчасти</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ path('app_user_profile') }}"><i class="fas fa-user-cog me-2"></i>Профиль</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Выйти</a></li>
+                        </ul>
+                    </div>
+                {%  else  %}
+                    <ul class="nav py-1">
+                        <li class="nav-item"><a href="{{ path('app_login') }}" class="btn btn-sm btn-outline-secondary rounded-pill">Войти</a></li>
+                        <li class="nav-item ms-4"><a href="{{ path('app_register') }}" class="btn btn-sm btn-outline-secondary rounded-pill">Регистрация</a></li>
+                    </ul>
+                {% endif %}
+            </div>
+        </nav>
+    <header class="py-1 mb-4 border-bottom">
+        {#{{ dump(app.flashes()) }}#}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show text-center" data-number="{{ loop.index }}" role="alert">
+                {{ message|trans(app.flashes('success'),'flashMessage') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        
+        
+        
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        
+        
+        
+        {% block header %}
+            <form action="/search" method="GET">
+                <div class="container d-flex flex-wrap justify-content-center">
+                    <div class="pt-1 text-center"> Поиск запчасти</div>
+                    <div class="mx-3">
+                        <input type="text" name="partsNumber" class="form-control form-control-sm" placeholder="Номер..." aria-label="Search">
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary">Найти</button>
+                    </div>
+                </div>
+            </form>
+        {% endblock %}
+    </header>      
+    <main class="flex-shrink-0">
+        <div class="container text-center">    
+            {% block body %}
+
+            {% endblock %}
+        </div>
+    </main>
+    
+    
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">ProxyParts 2024</span>
+        </div>
+    </footer>
+        
+        
+        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>       
+    
+    <script src="/vendor/js/bootstrap/bootstrap.min.js"></script>
+    <script src="/vendor/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/js/user.js?version={{ version }}"></script>
+    <script src="/js/ready.js?version={{ version }}"></script>
+    
+    {% block javascripts %}
+         
+
+    {% endblock %}
+        
+    </body>    
+</html>

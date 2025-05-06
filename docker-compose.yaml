@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+
+  nginx:
+    image: "nginx:stable-alpine"
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./project:/var/www/proxyparts
+    depends_on:
+      - php
+      - mysql
+
+  adminer: 
+    image: "adminer:latest"
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+
+  php:
+    build: 
+      context: dockerFiles
+      dockerfile: php.Dockerfile
+    volumes:
+      - ./project:/var/www/proxyparts
+
+  mysql:
+    image: "mariadb"
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: 123456
+      MARIADB_DATABASE: proxyparts
+      MARIADB_USER: proxyparts
+      MARIADB_PASSWORD: proxyparts
+    volumes:
+      - ./db:/var/lib/mysql
+  
+
+
+  composer:
+    user: "1000:1000"
+    build: 
+      context: dockerFiles
+      dockerfile: composer.Dockerfile
+    volumes:
+      - ./project:/var/www/proxyparts
+
+
+  symfony:
+    user: "1000:1000"
+    build: 
+      context: dockerFiles
+      dockerfile: php.Dockerfile
+    volumes:
+      - ./project:/var/www/proxyparts
+    entrypoint: ["php", "/var/www/proxyparts/bin/console"]
+  
